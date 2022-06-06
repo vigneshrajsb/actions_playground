@@ -1,10 +1,10 @@
-name: Merge to main Main
+name: Merge to main
 
 on:
   pull_request:
     types: [closed]
     branches:
-      - main
+      - master
 
 jobs:
   freeze_branch:
