@@ -1,0 +1,40 @@
+name: Merge to main Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  freeze_branch:
+    name: 'Freeze main branch'
+    if: "!contains(github.event.head_commit.message, 'test pr') && github.event.pull_request.merged == true"
+    runs-on: ubuntu-latest
+    steps:
+      - id: freeze
+        name: Freeze branch
+        run: |
+          echo "Freezing main branch"
+
+  publish_package:
+    needs: [freeze_branch]
+    name: build
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - id: freeze
+        name: Package
+        run: |
+          echo "package published"
+
+  unfreeze_branch:
+    name: 'Unfreeze main branch'
+    runs-on: ubuntu-latest
+    needs: [publish_package]
+    if: "!contains(github.event.head_commit.message, 'chore: version package')"
+    steps:
+      - id: unfreeze
+        name: Unfreeze branch
+        run: |
+          echo "unfreeze branch"
