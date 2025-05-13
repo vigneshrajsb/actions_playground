@@ -1,0 +1,36 @@
+---
+version: '2.1.0'
+
+environment:
+  defaultServices:
+    - name: 'postgres-db'
+
+    
+services:
+  - name: 'postgres-db'
+    docker:
+      dockerImage: 'postgres'
+      defaultTag: '14.3-alpine'
+      ports:
+        - 5432
+      env:
+        POSTGRES_USER: 'postgres_user'
+        POSTGRES_PASSWORD: 'mysecretpassword'
+        POSTGRES_DB: 'postgres_db'
+        SERVICE: 'postgres-db'
+        PGDATA: '/var/lib/postgresql/data/pgdata'
+      deployment:
+        public: false
+        resource:
+          cpu:
+            request: '10m'
+          memory:
+            request: '100Mi'
+        readiness:
+          tcpSocketPort: 5432
+        serviceDisks:
+          - name: 'postgres-volume'
+            mountPath: '/var/lib/postgresql/data'
+            accessModes: 'ReadWriteOnce'
+            storageSize: '5Gi'
+            
