@@ -1,0 +1,28 @@
+---
+version: '2.3.0'
+
+environment:
+  autoDeploy: true
+  defaultServices:
+    - name: 'cache-actions'
+
+services:
+  - name: "cache-actions"
+    defaultUUID: "dev-0"
+    docker:
+      dockerImage: "bitnami/memcached"
+      defaultTag: "latest"
+      ports:
+        - 11211
+      env:
+        MEMCACHED_CACHE_SIZE: "512"
+      deployment:
+        public: false
+        capacityType: "ON_DEMAND"
+        resource:
+          cpu:
+            request: "10m"
+          memory:
+            request: "200Mi"
+        readiness:
+          tcpSocketPort: 11211
