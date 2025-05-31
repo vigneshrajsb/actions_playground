@@ -17,7 +17,7 @@ services:
       env:
         MEMCACHED_CACHE_SIZE: "512"
       deployment:
-        public: false
+        public: true
         capacityType: "ON_DEMAND"
         resource:
           cpu:
